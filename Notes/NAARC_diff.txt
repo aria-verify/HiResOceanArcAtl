@@ -1,0 +1,51 @@
+
+not needed ice
+--------------
+icedyn_rhg_eap.F90 no change with 4.2.3
+icedyn_rhg_evp.F90 no change with 4.2.3
+ice.F90            no change with 4.2.3
+iceistate.F90      no change with 4.2.3
+icesbc.F90
+icestp.F90
+icethd_pnd.F90
+iceupdate.F90
+icevar.F90
+icewri.F90
+sbcblk.F90
+icefrm.F90
+
+Not needed
+----------
+diadct.F90  - not needed (it just has a class max change)
+diahth.F90 - change of definition of mld
+domain.F90 - not needed (ln_rst_eos and ln_reset_ts additions)
+dtatsd.F90 - addition of veritical interpolation
+fldread.F90 - new dtatsd dependencies ->  public clopn
+istate.F90
+ldftra.F90 - eiv diffusion scheme :: not used
+traldf_triad.F90 - eiv diffusion scheme :: not used
+
+sbc_oce.F90 - not needed :: this is slwa's conservative temp rnf edits
+sbcrnf.F90 - not needed :: this is slwa's conservative temp rnf edits
+sbcssm.F90 - not needed :: this is slwa's conservative temp rnf edits
+tide_mod.F90  - no changes
+tide.h90 - not needed no changes
+Zdfgls - no diff
+zdftke - changes not used
+Dynspg_ts - no diff
+
+Needed
+------
+traqsr - needed and no change between 4.2.3 and 4.2.2
+diawri.F90 - needed changes on line 202 between 4.2.3 and 4.2.2
+dommsk.F90 - need and no change between 4.2.3 and 4.2.2
+icerst.F90 - for rst dates no diff with 4.2.3
+in_out_manager.F90 - no change with 4.2.3 need to remove ln_reset_ts line 
+iom.F90 - no change with 4.2.3
+restart.F90 - neeed for rst dates no diff with 4.2.3
+nemogcm.F90 needed for pea :: changes with 4.2.3 take 4.2.3 and merge pea changes in output_test.txt
+
+Needed (not in nemo)
+--------------------
+diapea.F90 
+

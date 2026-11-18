@@ -1,0 +1,4 @@
+350d349
+<       zrhoco = rho0 * rn_cio
+359a359
+>             zrhoco = rho0 * drag_io(ji,jj) 
