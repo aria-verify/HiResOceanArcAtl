@@ -36,7 +36,6 @@
    nn_no       =       0   !  Assimilation cycle index
    cn_exp      =  'VERIFY',  !  experience name
    nn_it000    =       __IT000__   !  first time step
-!   nn_itend    =    6048   !  last  time step (std 5840)
    nn_itend    =    __ITEND__   !  last  time step (std 5840)
    nn_date0    =  18500101   !  date at nit_0000 (format yyyymmdd) used if ln_rstart=F or (ln_rstart=T and nn_rstctl=0 or 1)
    nn_time0    =       0   !  initial time of day in hhmm
@@ -54,7 +53,7 @@
       ln_rstdate=.true.,
    nn_istate   =       0   !  output the initial state (1) or not (0)
    ln_rst_list = .false.   !  output restarts at list of times using nn_stocklist (T) or at set frequency with nn_stock (F)
-   nn_stock    =       0   !  used only if ln_rst_list = F: output restart freqeuncy (modulo referenced to 1)
+   nn_stock    =       -1   !  used only if ln_rst_list = F: output restart freqeuncy (modulo referenced to 1)
       !                          !    =  0 force to write restart files only at the end of the run
       !                          !    = -1 do not do any restart
    nn_stocklist = 0,0,0,0,0,0,0,0,0,0 ! List of timesteps when a restart file is to be written
@@ -73,20 +72,20 @@
 !-----------------------------------------------------------------------
    ln_linssh   = .false.   !  =T  linear free surface  ==>>  model level are fixed in time
    !
-   rn_Dt       = 300     !  time step for the dynamics and tracer
+   rn_Dt       = __RDT__   !  time step for the dynamics and tracer
    rn_atfp     =    0.1    !  asselin time filter parameter
    !
    ln_crs      = .false.   !  Logical switch for coarsening module      (T => fill namcrs)
    ln_c1d      = .false.   !  Single column domain (1x1pt)              (T => fill namc1d)
    !
-   ln_meshmask = .false.   !  =T create a mesh file
+   ln_meshmask = .true.   !  =T create a mesh file
 /
 !-----------------------------------------------------------------------
 &namcfg        !   parameters of the configuration                      (default: use namusr_def in namelist_cfg)
 !-----------------------------------------------------------------------
    ln_read_cfg = .true.     !  (=T) read the domain configuration file
       !                      !  (=F) user defined configuration           (F => create/check namusr_def)
-      cn_domcfg = "domain_cfg"  ! domain configuration filename
+      cn_domcfg = "/work/n02/n02/shared/VERIFY/FORCING/DOM/domain_cfg_zlevel"  ! domain configuration filename
       !
       ln_closea    = .false. !  (=T => fill namclo) 
       !                      !  (=F) no control of net precip/evap over closed sea
@@ -126,7 +125,7 @@
    ln_tsd_dmp  = .false.         !  T-S restoring   (see namtra_dmp)
 !   ln_tsd_interp = .false.       !  ocean initialisation
 
-   cn_dir      = './FORCING/'      !  root directory for the T-S data location
+   cn_dir      = '/work/n02/n02/shared/VERIFY/FORCING/SHARED/'      !  root directory for the T-S data location
    !___________!_________________________!___________________!___________!_____________!________!___________!__________________!__________!_______________!
    !           !  file name              ! frequency (hours) ! variable  ! time interp.!  clim  ! 'yearly'/ ! weights filename ! rotation ! land/sea mask !
    !           !                         !  (if <0  months)  !   name    !   (logical) !  (T/F) ! 'monthly' !                  ! pairing  !    filename   !
@@ -292,19 +291,19 @@
    ln_Cx_ice_LU12  = .false.  !  (Lupkes et al. 2012)
    ln_Cx_ice_LG15  = .false.  !  (Lupkes & Gryanik 2015)
    !
-   cn_dir      = '/work/n02/n02/shared/VERIFY/FORCING/SBC/FloodFilled/'      !  root directory for the bulk data location
+   cn_dir      = '/work/n02/n02/shared/VERIFY/FORCING/SBC/FloodFilled/Transient/'      !  root directory for the bulk data location
    !___________!_________________________!___________________!___________!_____________!________!___________!______________________________________!__________!_______________!
    !           !  file name              ! frequency (hours) ! variable  ! time interp.!  clim  ! 'yearly'/ !       weights filename               ! rotation ! land/sea mask !
    !           !                         !  (if <0  months)  !   name    !   (logical) !  (T/F) ! 'monthly' !                                      ! pairing  !    filename   !
-   sn_wndi     = 'glosat_u10'                 ,    -1        , 'u10'     ,   .false.   , .false., 'yearly'  , 'weights_bicub.nc'  , 'Uwnd'   , '',
-   sn_wndj     = 'glosat_v10'                 ,    -1        , 'v10'     ,   .false.   , .false., 'yearly'  , 'weights_bicub.nc'  , 'Vwnd'   , '',
-   sn_qsr      = 'glosat_msdwswrf'            ,    -1        , 'msdwswrf',   .false.   , .false., 'yearly'  , 'weights_bicub.nc' , ''       , '',
-   sn_qlw      = 'glosat_msdwlwrf'            ,    -1        , 'msdwlwrf',   .false.   , .false., 'yearly'  , 'weights_bicub.nc' , ''       , '',
-   sn_tair     = 'glosat_t1500mm'             ,    -1        , 't1500mm' ,   .false.   , .false., 'yearly'  , 'weights_bicub.nc' , ''       , '',
-   sn_humi     = 'glosat_sph'                 ,    -1        , 'sph'     ,   .false.   , .false., 'yearly'  , 'weights_bicub.nc' , ''       , '',
-   sn_prec     = 'glosat_mtpr'                ,    -1        , 'mtpr'    ,   .false.   , .false., 'yearly'  , 'weights_bicub.nc' , ''       , '',
-   sn_snow     = 'glosat_msr'                 ,    -1        , 'msr'     ,   .false.   , .false., 'yearly'  , 'weights_bicub.nc' , ''       , '',
-   sn_slp      = 'glosat_mslp'                ,    -1        , 'mslp'    ,   .false.   , .false., 'yearly'  , 'weights_bicub.nc' , ''       , '',
+   sn_wndi     = 'glosat_u10_unlim_time'      ,    -1        , 'u10'     ,   .true.   , .false., 'yearly'  , 'weights_bicub.nc'  , 'Uwnd'   , '',
+   sn_wndj     = 'glosat_v10_unlim_time'      ,    -1        , 'v10'     ,   .true.   , .false., 'yearly'  , 'weights_bicub.nc'  , 'Vwnd'   , '',
+   sn_qsr      = 'glosat_msdwswrf_unlim_time' ,    -1        , 'msdwswrf',   .true.   , .false., 'yearly'  , 'weights_bicub.nc' , ''       , '',
+   sn_qlw      = 'glosat_msdwlwrf_unlim_time' ,    -1        , 'msdwlwrf',   .true.   , .false., 'yearly'  , 'weights_bicub.nc' , ''       , '',
+   sn_tair     = 'glosat_t1500mm_unlim_time'  ,    -1        , 't1500mm' ,   .true.   , .false., 'yearly'  , 'weights_bicub.nc' , ''       , '',
+   sn_humi     = 'glosat_sph_unlim_time'      ,    -1        , 'sph'     ,   .true.   , .false., 'yearly'  , 'weights_bicub.nc' , ''       , '',
+   sn_prec     = 'glosat_mtpr_unlim_time'     ,    -1        , 'mtpr'    ,   .true.   , .false., 'yearly'  , 'weights_bicub.nc' , ''       , '',
+   sn_snow     = 'glosat_msr_unlim_time'      ,    -1        , 'msr'     ,   .true.   , .false., 'yearly'  , 'weights_bicub.nc' , ''       , '',
+   sn_slp      = 'glosat_mslp_unlim_time'     ,    -1        , 'mslp'    ,   .true.   , .false., 'yearly'  , 'weights_bicub.nc' , ''       , '',
 
    sn_uoatm    = 'NOT USED'                   ,    6.        , 'UOATM'   ,   .false.   , .true. , 'yearly'  , 'weights_core_orca2_bilinear_noc.nc' , 'Uoceatm', ''
    sn_voatm    = 'NOT USED'                   ,    6.        , 'VOATM'   ,   .false.   , .true. , 'yearly'  , 'weights_core_orca2_bilinear_noc.nc' , 'Voceatm', ''
@@ -490,7 +489,7 @@
       rn_dep_max  = 150.       !  depth over which runoffs is spread ( ln_rnf_depth_ini = .true.,)
       nn_rnf_depth_file = 0    !  create (=1) a runoff depth file or not (=0)
 
-   cn_dir       = 'FORCING/'      !  root directory for the runoff data location
+   cn_dir       = '/work/n02/n02/shared/VERIFY/FORCING/SHARED/'      !  root directory for the runoff data location
    !___________!_________________________!___________________!___________!_____________!________!___________!__________________!__________!_______________!
    !           !  file name              ! frequency (hours) ! variable  ! time interp.!  clim  ! 'yearly'/ ! weights filename ! rotation ! land/sea mask !
    !           !                         !  (if <0  months)  !   name    !   (logical) !  (T/F) ! 'monthly' !                  ! pairing  !    filename   !
@@ -729,9 +728,9 @@
    ln_bdy         = .true.    !  Use unstructured open boundaries
    nb_bdy         = 1         !  number of open boundary sets
    ln_coords_file = .true.,.true.   !  =T : read bdy coordinates from file
-      cn_coords_file = 'FORCING/coordinates.bdy.nc','FORCING/ICE/coordinates_ice.bdy.nc' !  bdy coordinates files
+      cn_coords_file = '/work/n02/n02/shared/VERIFY/FORCING/BDY/zlevel/coordinates.bdy.nc' !  bdy coordinates files
    ln_mask_file   = .true.,   !  =T : read mask from file
-      cn_mask_file = 'bdy_msk.nc',       !  name of mask file (if ln_mask_file=.TRUE.)
+      cn_mask_file = '/work/n02/n02/shared/VERIFY/FORCING/SHARED/bdy_msk.nc',       !  name of mask file (if ln_mask_file=.TRUE.)
    cn_dyn2d    = 'flather','none'          !
    nn_dyn2d_dta   =  1,0        !  = 0, bdy data are equal to the initial state
       !                       !  = 1, bdy data are read in 'bdydata   .nc' files
